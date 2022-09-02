@@ -3,12 +3,15 @@ package BookDetails;
 import java.sql.*;
 import java.util.Scanner;
 
-public class BookImplementation implements BookInterface,Connectivity {
+public class BookImplementation implements BookInterface {
+    Scanner s=new Scanner(System.in);
+    Connection connection;
+    ResultSet resultSet;
+    Statement statement;
     @Override
     public void addBook(Book book) {
         try {
-             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection= DriverManager.getConnection(url,username,password);
+
              PreparedStatement preparedStatement=connection.prepareStatement("insert into Book_Details values(?,?,?" +
                      "?,?");
              preparedStatement.setInt(1,book.id);
@@ -22,12 +25,13 @@ public class BookImplementation implements BookInterface,Connectivity {
 
             e.printStackTrace();
         }
+
     }
 
     @Override
     public void showBook() {
         try{
-            Connection connection=DriverManager.getConnection(url,username,password );
+
             Statement statement=connection.createStatement();
             ResultSet resultSet=statement.executeQuery("select * from Book_Details");
             System.out.printf("%-10s"+ "%-20s" + "%-20s"+ "%-20s"+"%-20s\n","id","name","publisher","price","author");
@@ -44,19 +48,17 @@ public class BookImplementation implements BookInterface,Connectivity {
         }
     }
 
-    @Override
-    public void addBook() {
 
-    }
 
     public void updateBook() {
         try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            Scanner s=new Scanner(System.in);
+            showBook();
+
             System.out.println("Enter Id you want to update");
             int id=s.nextInt();
-            System.out.println();
-            PreparedStatement preparedStatement=connection.prepareStatement("update book set name=? where id=? ");
+
+            PreparedStatement preparedStatement=connection.prepareStatement("update Book_Details set name=? where " +
+                    "id=? ");
             System.out.println("Enter book name");
             String name=s.next();
             preparedStatement.setInt(2,id);
@@ -68,8 +70,60 @@ public class BookImplementation implements BookInterface,Connectivity {
             System.out.println(e.getMessage());
         }
     }
-    public void delete()
+    public void deleteBook()
     {
+        try {
+            showBook();
+            System.out.println("Enter Book id");
 
+            int id=s.nextInt();
+            PreparedStatement preparedStatement=connection.prepareStatement("delete from Book_Details where id=?");
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+            showBook();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sortBookByID() {
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("select * from Book_Details order by id desc");
+            System.out.printf("%-15s" +"%-15s" +"%-15s" +"%-15s" +"%-15s" +'\n',"id","name","publisher","price",
+                    "author");
+            while(resultSet.next())
+            {
+                System.out.printf("%-15s" +"%-15s" +"%-15s" +"%-15s" +"%-15s" +'\n',resultSet.getInt(1),
+                        resultSet.getString(2), resultSet.getString(3),resultSet.getFloat(4), resultSet.getString(5));
+
+            }
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void sortBookByPublisher() {
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("select a.publisher, b.author from Book_Details b inner join book a " +
+                    "where a.id = b.id order by a.publisher");
+            System.out.printf("%-15s" +"%-15s"  +'\n',"publisher", "author" );
+            while(resultSet.next())
+            {
+                System.out.printf("%-15s" +"%-15s"  +'\n',
+                        resultSet.getString(1), resultSet.getString(2));
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
