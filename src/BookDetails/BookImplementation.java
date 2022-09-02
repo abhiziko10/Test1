@@ -43,6 +43,12 @@ public class BookImplementation implements BookInterface,Connectivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void addBook() {
+
+    }
+
     public void updateBook() {
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -64,6 +70,6 @@ public class BookImplementation implements BookInterface,Connectivity {
     }
     public void delete()
     {
-        
+
     }
 }
