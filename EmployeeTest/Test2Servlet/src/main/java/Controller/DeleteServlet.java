@@ -20,5 +20,6 @@ public class DeleteServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        resp.sendRedirect("display");
     }
 }
