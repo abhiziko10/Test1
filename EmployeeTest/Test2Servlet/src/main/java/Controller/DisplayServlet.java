@@ -34,7 +34,11 @@ public class DisplayServlet extends HttpServlet {
                 out.println("<tr><td>"+ID+"<td></td>"+name+"</td><td>"+username+"</td><td>"+password+"</td></tr>");
             }
             out.println("</table>");
-            out.println(" <a href=index1.html>AddEmployee</a>");
+            out.println(" <a href='index1.html'>AddEmployee</a>");
+            out.println("<br>");
+            out.println(" <a href='delete.html'>DeleteEmployee</a>");
+            out.println("<br>");
+            out.println("<a href='logout'>logout</a>");
             out.println("</html></body>");
 
         } catch (SQLException e) {
@@ -42,3 +46,4 @@ public class DisplayServlet extends HttpServlet {
         }
     }
 }
+
