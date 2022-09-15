@@ -60,23 +60,4 @@ public class EmployeeDAO {
             throw new RuntimeException(e);
         }
     }
-
-
-    public List<Employee> showEmployee() {
-        List<Employee> employee = new ArrayList<Employee>();
-        Connection connection = DBConnection.getConnection();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from Employee");
-            while (resultSet.next()) {
-                Employee employee1 = new Employee();
-                employee1.setID(resultSet.getInt("ID"));
-                employee1.setName(resultSet.getString("name"));
-            }
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return employee;
-    }
 }
