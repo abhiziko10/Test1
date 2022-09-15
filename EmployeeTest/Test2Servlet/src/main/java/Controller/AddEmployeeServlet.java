@@ -5,12 +5,13 @@ import Model.Employee;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 @WebServlet("/addEmployee")
-public class AddEmployeeServlet {
+public class AddEmployeeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out=resp.getWriter();
         int ID= Integer.parseInt(req.getParameter("ID"));
@@ -25,12 +26,11 @@ public class AddEmployeeServlet {
         EmployeeDAO employeeDAO=new EmployeeDAO();
         try{
             employeeDAO.addEmployee(employee);
-            out.println("You are registered successfully");
-            out.println("<a href = 'index1.html'>Add more Employees</a>");
+
         }
         catch(Exception e){
-            throw new RuntimeException();
-        }
 
+        }
+        resp.sendRedirect("display");
     }
 }
